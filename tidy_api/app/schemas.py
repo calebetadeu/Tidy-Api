@@ -2,7 +2,8 @@ from typing import List, Optional
 from pydantic import BaseModel
 
 class ClientBase(BaseModel):
-    codigo_tidy: Optional[str] = None  # Campo adicionado
+    codigo_tidy: Optional[str] = None
+    cnpj: Optional[str] = None  # Novo campo adicionado
     codigo_ditrator: Optional[str] = None
     codigo_casa_dos_rolamentos: Optional[str] = None
     codigo_romar_mann: Optional[str] = None

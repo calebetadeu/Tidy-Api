@@ -1,13 +1,12 @@
-# app/models.py
 from sqlalchemy import Column, Integer, String, Float, JSON
-from app.db.base_class import Base  # Importa o mesmo Base
+from app.db.base_class import Base  # Certifique-se de importar o Base unificado
 import json
 
 class Client(Base):
     __tablename__ = "clients"
 
     id = Column(Integer, primary_key=True, index=True)
-    codigo_tidy = Column(String, nullable=True)  # Campo adicionado
+    codigo_tidy = Column(String, nullable=True)  # Campo já existente
     codigo_ditrator = Column(String, nullable=True)
     codigo_casa_dos_rolamentos = Column(String, nullable=True)
     codigo_romar_mann = Column(String, nullable=True)
@@ -19,6 +18,7 @@ class Client(Base):
     empresas_trabalhadas = Column(JSON, nullable=True)
     latitude = Column(Float, nullable=True)
     longitude = Column(Float, nullable=True)
+    cnpj = Column(String, nullable=True)  # Novo campo adicionado
 
     def get_empresas(self):
         if not self.empresas_trabalhadas:

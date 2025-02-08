@@ -27,7 +27,7 @@ def filter_clients(
     query = db.query(models.Client)
     
     if razao_social:
-        query = query.filter(models.Client.nome.ilike(f"%{razao_social}%"))
+        query = query.filter(models.Client.razao_social.ilike(f"%{razao_social}%"))
     
     if estado:
         # Usa o atributo 'estado' que existe no modelo
@@ -41,7 +41,6 @@ def filter_clients(
     if not clients:
         raise HTTPException(status_code=404, detail="Nenhum cliente encontrado com os filtros informados")
     return clients
-
 
 @router.get("/clients/locations", response_model=List[schemas.StateLocations])
 def get_client_locations(db: Session = Depends(get_db)):

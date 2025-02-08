@@ -44,7 +44,7 @@ def importar_clientes(csv_path: str):
         rota = row.get("Rota", "").strip()
         cidade = row.get("Cidade", "").strip()
         estado = row.get("Estado", "").strip()
-       
+        cnpj = row.get("CNPJ", "").strip()
         # Processamento do campo "Empresas Trabalhadas"
         empresas_str = row.get("Empresas Trabalhadas", "").strip()
         empresas_list = [empresa.strip() for empresa in empresas_str.split(" - ")] if empresas_str else []
@@ -70,6 +70,7 @@ def importar_clientes(csv_path: str):
             codigo_casa_dos_rolamentos=codigo_casa_dos_rolamentos,
             codigo_romar_mann=codigo_romar_mann,
             codigo_tidy=codigo_tidy,
+            cnpj=cnpj,
             nome_fantasia=nome_fantasia,
             razao_social=razao_social,
             rota=rota,
