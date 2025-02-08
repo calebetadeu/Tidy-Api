@@ -1,14 +1,12 @@
-from fastapi import FastAPI, File, UploadFile, HTTPException
+# app/endpoints/pdf.py
+from fastapi import APIRouter, UploadFile, File, HTTPException
 from io import BytesIO
 import re
 from PyPDF2 import PdfReader
-from pydantic import BaseModel
 from typing import List, Optional
+from pydantic import BaseModel
 
-app = FastAPI()
-
-
-# Modelos para a documentação da resposta
+router = APIRouter()
 
 class MatchData(BaseModel):
     Prefixo: str
@@ -29,15 +27,10 @@ class MatchData(BaseModel):
     Ajuste: str
     Vendedor: str
 
-
 class ExtractResponse(BaseModel):
     data: List[MatchData]
 
-
 def extrair_texto_pdf_bytes(file_bytes: bytes):
-    """
-    Recebe os bytes de um arquivo PDF e extrai o texto de cada página.
-    """
     reader = PdfReader(BytesIO(file_bytes))
     textos = []
     for pagina in reader.pages:
@@ -46,12 +39,7 @@ def extrair_texto_pdf_bytes(file_bytes: bytes):
             textos.append(texto)
     return textos
 
-
 def processar_linhas(textos: List[str]):
-    """
-    Processa cada linha dos textos extraídos do PDF para extrair os dados conforme os padrões definidos.
-    Retorna uma lista de dicionários (match_data) com os dados.
-    """
     dados = []
     # Expressão regular para capturar os campos conforme o padrão
     pattern = re.compile(
@@ -73,7 +61,6 @@ def processar_linhas(textos: List[str]):
         r"(?P<Ajuste>\S*)\s*"
         r"(?P<Vendedor>\d{6})$"
     )
-
     for texto in textos:
         linhas = texto.split('\n')
         for linha in linhas:
@@ -84,13 +71,11 @@ def processar_linhas(textos: List[str]):
                 'Nome', 'Dt Comissao', 'Vencto', 'Vlr Base'
             ]):
                 continue
-
             match = pattern.match(linha)
             if match:
                 match_data = match.groupdict()
                 if match_data.get('Parcela') is None:
                     match_data['Parcela'] = ''
-
                 # Ajuste: verifica se o campo 'Nome' possui a data de comissão grudada
                 nome = match_data['Nome']
                 dt_comissao = match_data['Dt_Comissao']
@@ -115,7 +100,6 @@ def processar_linhas(textos: List[str]):
                     else:
                         parcela = ''
                         cliente_idx = 2
-
                     match_data = {
                         'Prefixo': partes[0],
                         'No_Titulo': partes[1],
@@ -135,7 +119,6 @@ def processar_linhas(textos: List[str]):
                         'Ajuste': '',
                         'Vendedor': partes[-1],
                     }
-
                     # Ajusta o campo 'Nome' se a data de comissão estiver grudada
                     nome = match_data['Nome']
                     dt_comissao = match_data['Dt_Comissao']
@@ -151,24 +134,17 @@ def processar_linhas(textos: List[str]):
                             match_data['Dt_Comissao'] = nome_match.group(2)
                     dados.append(match_data)
                 else:
-                    # Linha não processada (possivelmente rodapé ou irrelevante)
                     continue
     return dados
 
-
-@app.post("/extract", response_model=ExtractResponse)
+@router.post("/extract", response_model=ExtractResponse)
 async def extract_pdf(file: UploadFile = File(...)):
-    """
-    Recebe um PDF via upload, extrai os dados de cada linha e retorna a lista de objetos match_data.
-    """
     if file.content_type != "application/pdf":
         raise HTTPException(status_code=400, detail="O arquivo enviado deve ser um PDF.")
     try:
         file_bytes = await file.read()
         textos = extrair_texto_pdf_bytes(file_bytes)
         dados = processar_linhas(textos)
-        if not dados:
-            return {"data": []}
         return {"data": dados}
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
