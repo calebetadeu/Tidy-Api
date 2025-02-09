@@ -1,1 +1,1 @@
-web: uvicorn main:app --host=0.0.0.0 --port=${PORT:-8000}
+web: uvicorn tidy_api.app.main:app --host=0.0.0.0 --port=${PORT}
