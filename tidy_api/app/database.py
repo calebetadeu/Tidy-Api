@@ -1,7 +1,7 @@
 # app/database.py
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.db.base_class import Base  # Importa o mesmo Base
+# from app.db.base_class import Base  # Importa o mesmo Base
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./clients.db"
 
