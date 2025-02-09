@@ -1,5 +1,5 @@
 from sqlalchemy import Column, Integer, String, Float, JSON
-from app.database import Base  # Certifique-se de importar o Base unificado
+from app.db.base_class import Base  # Certifique-se de importar o Base unificado
 import json
 
 class Client(Base):
