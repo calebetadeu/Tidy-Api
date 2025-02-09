@@ -1,7 +1,6 @@
-# app/database.py
+# tidy_api/app/database.py
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
-# from app.db.base_class import Base  # Importa o mesmo Base
+from sqlalchemy.orm import sessionmaker, declarative_base  # Import declarative_base
 
 SQLALCHEMY_DATABASE_URL = "sqlite:///./clients.db"
 
@@ -9,3 +8,5 @@ engine = create_engine(
     SQLALCHEMY_DATABASE_URL, connect_args={"check_same_thread": False}
 )
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
+Base = declarative_base()  # Define Base for your models

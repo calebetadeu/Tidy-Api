@@ -2,9 +2,9 @@
 from unittest.mock import Base
 from django.template import engines
 from fastapi import FastAPI
-from app.endpoints import clients, pdf
-from app.database import engine, Base
-from app.models import *  # Importa todos os seus modelos
+from tidy_api.app.endpoints import clients, pdf
+from tidy_api.app.database import engine, Base
+from tidy_api.app.models import * 
 
 app = FastAPI()
 Base.metadata.create_all(bind=engine)

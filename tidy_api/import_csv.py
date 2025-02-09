@@ -1,7 +1,7 @@
 import csv
 import os
-from app.database import SessionLocal, engine, Base
-from app.models import Client
+from tidy_api.app.database import SessionLocal, engine, Base
+from tidy_api.app.models import Client
 
 def recreate_database():
     print("Dropping all tables...")

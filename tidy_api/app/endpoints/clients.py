@@ -2,9 +2,8 @@ from typing import List, Optional
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from sqlalchemy import func
-from app import crud, schemas, models
-from app.database import SessionLocal, engine
-
+from tidy_api.app import crud, schemas, models
+from tidy_api.app.database import SessionLocal, engine, Base
 router = APIRouter()
 
 # Cria as tabelas no banco de dados, se ainda não existirem

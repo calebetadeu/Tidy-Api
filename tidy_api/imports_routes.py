@@ -1,8 +1,7 @@
 # import_routes.py
 import csv
+from tidy_api.app.models import Client
 from app.database import SessionLocal, engine, Base
-from app.models import Client
-
 # Se ainda não criou as tabelas, este comando as cria:
 Base.metadata.create_all(bind=engine)
 

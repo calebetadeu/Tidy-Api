@@ -1,6 +1,6 @@
 # create_db.py
-from app.database import engine, Base
-from app.models import *  # Importa todos os seus modelos
+from tidy_api.app.database import engine, Base
+from tidy_api.app.models import *  # Importa todos os seus modelos
 
 def criar_banco():
     Base.metadata.create_all(bind=engine)
