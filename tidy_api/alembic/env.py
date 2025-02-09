@@ -8,7 +8,7 @@ import sys
 sys.path.append(os.path.join(os.path.dirname(__file__), '..', '..'))
 
 # Importa o modelo Base do seu aplicativo
-from tidy_api.models import Base
+from tidy_api.app.models import Base
 
 # Configurações do arquivo alembic.ini
 config = context.config
